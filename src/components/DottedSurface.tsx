@@ -9,26 +9,27 @@ export function DottedSurface() {
 
         containerRef.current.innerHTML = '';
 
-        const SEPARATION = 100;
-        const AMOUNTX = 100;
-        const AMOUNTY = 100;
+        // PALLINI PIÙ FITTI (60 invece di 100) E PIÙ NUMEROSI (150x150)
+        const SEPARATION = 60;
+        const AMOUNTX = 150;
+        const AMOUNTY = 150;
 
         const scene = new THREE.Scene();
         const bgColor = 0x020205;
-        // Nebbia ravvicinata per sfumare l'orizzonte
-        scene.fog = new THREE.Fog(bgColor, 300, 2500);
+        scene.fog = new THREE.Fog(bgColor, 800, 3000); // Nebbia per un bell'orizzonte sfumato
 
         const camera = new THREE.PerspectiveCamera(
-            75, // Grandangolo più ampio
+            60,
             window.innerWidth / window.innerHeight,
             1,
             10000
         );
 
-        // TELECAMERA BASSA AD ALTEZZA OCCHI
-        camera.position.set(0, 150, 1000);
-        // GUARDIAMO LONTANISSIMO VERSO L'ORIZZONTE
-        camera.lookAt(0, 0, -2000); 
+        // LA SOLUZIONE EFFETTO DRONE: 
+        // Telecamera molto alta (Y=800) e spinta indietro (Z=1500)
+        camera.position.set(0, 800, 1500);
+        // Guarda esattamente verso il centro del pavimento
+        camera.lookAt(0, 0, 0); 
 
         const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
         renderer.setPixelRatio(window.devicePixelRatio);
@@ -43,11 +44,11 @@ export function DottedSurface() {
         let i = 0;
         for (let ix = 0; ix < AMOUNTX; ix++) {
             for (let iy = 0; iy < AMOUNTY; iy++) {
+                // Griglia sul pavimento
                 positions[i * 3] = ix * SEPARATION - (AMOUNTX * SEPARATION) / 2;
                 positions[i * 3 + 1] = 0; 
                 positions[i * 3 + 2] = iy * SEPARATION - (AMOUNTY * SEPARATION) / 2;
 
-                // Colori
                 if (Math.random() > 0.5) {
                     colors[i * 3] = 0.0; colors[i * 3 + 1] = 0.95; colors[i * 3 + 2] = 1.0; 
                 } else {
@@ -62,7 +63,7 @@ export function DottedSurface() {
         geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 
         const material = new THREE.PointsMaterial({
-            size: 4,
+            size: 3, // Pallini leggermente più piccoli per maggiore eleganza
             vertexColors: true,
             transparent: true,
             opacity: 0.8,
@@ -70,9 +71,8 @@ export function DottedSurface() {
 
         const points = new THREE.Points(geometry, material);
         
-        // LA MAGIA: Spingiamo tutto l'oceano fisicamente verso il basso (-300px)
-        // Così liberiamo la parte alta dello schermo per il testo!
-        points.position.y = -300;
+        // Lo spostiamo leggermente in basso rispetto al testo
+        points.position.y = -200;
         
         scene.add(points);
 
@@ -88,19 +88,17 @@ export function DottedSurface() {
             let i = 0;
             for (let ix = 0; ix < AMOUNTX; ix++) {
                 for (let iy = 0; iy < AMOUNTY; iy++) {
-                    // Onde più alte (da 50 a 80) per far sembrare un vero mare
+                    // Onde fluide ed eleganti
                     posArray[i * 3 + 1] =
-                        Math.sin((ix + count) * 0.3) * 80 +
-                        Math.sin((iy + count) * 0.5) * 80;
+                        Math.sin((ix + count) * 0.3) * 50 +
+                        Math.sin((iy + count) * 0.5) * 50;
                     i++;
                 }
             }
 
             posAttr.needsUpdate = true;
             renderer.render(scene, camera);
-            
-            // Velocità dell'acqua
-            count += 0.04; 
+            count += 0.03; 
         };
 
         const handleResize = () => {
