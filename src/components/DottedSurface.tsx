@@ -1,4 +1,5 @@
-import React, { useEffect, useRef } from 'react';
+// Rimosso 'React' per risolvere l'errore TS6133 di Vercel
+import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 
 export function DottedSurface() {
@@ -7,17 +8,16 @@ export function DottedSurface() {
     useEffect(() => {
         if (!containerRef.current) return;
 
-        // Pulizia per evitare duplicati
         containerRef.current.innerHTML = '';
 
         const SEPARATION = 100;
-        const AMOUNTX = 80; // Aumentiamo la distesa
-        const AMOUNTY = 80;
+        const AMOUNTX = 100; // Allargato per coprire meglio lo schermo
+        const AMOUNTY = 100;
 
-        // 1. Setup Scena
         const scene = new THREE.Scene();
         const bgColor = 0x020205;
-        scene.fog = new THREE.Fog(bgColor, 1000, 3500);
+        // La nebbia aiuta a sfumare i puntini in lontananza, dando profondità
+        scene.fog = new THREE.Fog(bgColor, 500, 3000);
 
         const camera = new THREE.PerspectiveCamera(
             60,
@@ -26,10 +26,11 @@ export function DottedSurface() {
             10000
         );
 
-        // --- QUESTA È LA PARTE CHE TRASFORMA LA "PARETE" IN UN "MARE" ---
-        // X=0 (centro), Y=1200 (molto in alto), Z=1800 (lontano)
-        camera.position.set(0, 1200, 1800);
-        camera.lookAt(0, 0, 0); // Punta al centro del mare di pallini
+        // --- SOLUZIONE EFFETTO MARE ---
+        // Abbassiamo la telecamera (Y = 400 invece di 1200) e la spingiamo indietro (Z = 2000)
+        camera.position.set(0, 400, 2000);
+        // La facciamo guardare leggermente verso il basso sull'orizzonte
+        camera.lookAt(0, -100, 0); 
 
         const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
         renderer.setPixelRatio(window.devicePixelRatio);
@@ -37,7 +38,6 @@ export function DottedSurface() {
         renderer.setClearColor(bgColor, 1);
         containerRef.current.appendChild(renderer.domElement);
 
-        // 2. Particelle
         const numParticles = AMOUNTX * AMOUNTY;
         const positions = new Float32Array(numParticles * 3);
         const colors = new Float32Array(numParticles * 3);
@@ -45,16 +45,14 @@ export function DottedSurface() {
         let i = 0;
         for (let ix = 0; ix < AMOUNTX; ix++) {
             for (let iy = 0; iy < AMOUNTY; iy++) {
-                // Griglia piatta sul pavimento (X, Z)
                 positions[i * 3] = ix * SEPARATION - (AMOUNTX * SEPARATION) / 2;
-                positions[i * 3 + 1] = 0; // Altezza Y (iniziale)
+                positions[i * 3 + 1] = 0; 
                 positions[i * 3 + 2] = iy * SEPARATION - (AMOUNTY * SEPARATION) / 2;
 
-                // Colori Cyber
                 if (Math.random() > 0.5) {
-                    colors[i * 3] = 0.0; colors[i * 3 + 1] = 0.95; colors[i * 3 + 2] = 1.0; // Ciano
+                    colors[i * 3] = 0.0; colors[i * 3 + 1] = 0.95; colors[i * 3 + 2] = 1.0; 
                 } else {
-                    colors[i * 3] = 0.44; colors[i * 3 + 1] = 0.0; colors[i * 3 + 2] = 1.0; // Viola
+                    colors[i * 3] = 0.44; colors[i * 3 + 1] = 0.0; colors[i * 3 + 2] = 1.0; 
                 }
                 i++;
             }
@@ -86,21 +84,21 @@ export function DottedSurface() {
             let i = 0;
             for (let ix = 0; ix < AMOUNTX; ix++) {
                 for (let iy = 0; iy < AMOUNTY; iy++) {
-                    // EFFETTO ONDA: Sommiamo due seni per movimento organico
+                    // Onde più fluide
                     posArray[i * 3 + 1] =
-                        Math.sin((ix + count) * 0.3) * 60 +
-                        Math.sin((iy + count) * 0.5) * 60;
+                        Math.sin((ix + count) * 0.3) * 50 +
+                        Math.sin((iy + count) * 0.5) * 50;
                     i++;
                 }
             }
 
             posAttr.needsUpdate = true;
             
-            // Rotazione panoramica lentissima
-            points.rotation.y = count * 0.02;
+            // Ho rimosso la rotazione sull'asse Y (points.rotation.y = ...) 
+            // perché faceva girare il mare come un disco, distruggendo l'effetto prospettico.
 
             renderer.render(scene, camera);
-            count += 0.04; // Velocità movimento
+            count += 0.03; // Velocità dell'onda
         };
 
         const handleResize = () => {
@@ -124,7 +122,6 @@ export function DottedSurface() {
     return (
         <div
             ref={containerRef}
-            // Z-INDEX -1 per stare dietro al testo
             className="fixed inset-0 z-[-1] bg-[#020205] overflow-hidden pointer-events-none"
         />
     );
