@@ -7,24 +7,30 @@ export function DottedSurface({ className }: { className?: string }) {
     useEffect(() => {
         if (!containerRef.current) return;
 
-        // Pulizia preliminare per evitare doppie istanze in Vite
+        // Pulizia per Vite HMR
         containerRef.current.innerHTML = '';
 
         const SEPARATION = 100;
-        const AMOUNTX = 60;
-        const AMOUNTY = 60;
+        const AMOUNTX = 70; // Aumentato per coprire più orizzonte
+        const AMOUNTY = 70;
 
         // 1. Setup Scena
         const scene = new THREE.Scene();
-        scene.fog = new THREE.Fog(0x020205, 1000, 2500);
+        
+        // Colore sfondo scuro profondo
+        const bgColor = 0x020205;
+        scene.fog = new THREE.Fog(bgColor, 1000, 3000); // Nebbia per dare profondità all'orizzonte
 
         const camera = new THREE.PerspectiveCamera(
-            60,
+            65, // Campo visivo leggermente più largo
             window.innerWidth / window.innerHeight,
             1,
-            10000,
+            10000
         );
-        camera.position.set(0, 400, 1200);
+        
+        // POSIZIONE CAMERA: Abbassata e allontanata per vedere l'onda in prospettiva (effetto mare)
+        camera.position.set(0, 650, 1500); 
+        camera.lookAt(0, 0, 0);
 
         const renderer = new THREE.WebGLRenderer({
             alpha: true,
@@ -32,42 +38,42 @@ export function DottedSurface({ className }: { className?: string }) {
         });
         renderer.setPixelRatio(window.devicePixelRatio);
         renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setClearColor(0x020205, 1);
+        renderer.setClearColor(bgColor, 1);
 
         containerRef.current.appendChild(renderer.domElement);
 
         // 2. Creazione Particelle
-        const positions: number[] = [];
-        const colors: number[] = [];
+        const numParticles = AMOUNTX * AMOUNTY;
+        const positions = new Float32Array(numParticles * 3);
+        const colors = new Float32Array(numParticles * 3);
 
+        let i = 0;
         for (let ix = 0; ix < AMOUNTX; ix++) {
             for (let iy = 0; iy < AMOUNTY; iy++) {
-                const x = ix * SEPARATION - (AMOUNTX * SEPARATION) / 2;
-                const y = 0;
-                const z = iy * SEPARATION - (AMOUNTY * SEPARATION) / 2;
+                // Posizionamento sulla griglia XZ (orizzontale)
+                positions[i * 3] = ix * SEPARATION - (AMOUNTX * SEPARATION) / 2;
+                positions[i * 3 + 1] = 0; // Altezza Y (iniziale)
+                positions[i * 3 + 2] = iy * SEPARATION - (AMOUNTY * SEPARATION) / 2;
 
-                positions.push(x, y, z);
-
+                // Colori Cyber
                 if (Math.random() > 0.5) {
-                    colors.push(0.0, 0.95, 1.0); // Ciano
+                    colors[i * 3] = 0.0; colors[i * 3 + 1] = 0.95; colors[i * 3 + 2] = 1.0; // Ciano
                 } else {
-                    colors.push(0.44, 0.0, 1.0); // Viola
+                    colors[i * 3] = 0.44; colors[i * 3 + 1] = 0.0; colors[i * 3 + 2] = 1.0; // Viola
                 }
+                i++;
             }
         }
 
         const geometry = new THREE.BufferGeometry();
-        
-        // LA RIGA CHIAVE: setUsage(THREE.DynamicDrawUsage) per permettere il movimento
-        const positionAttribute = new THREE.Float32BufferAttribute(positions, 3).setUsage(THREE.DynamicDrawUsage);
-        geometry.setAttribute('position', positionAttribute);
-        geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+        geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3).setUsage(THREE.DynamicDrawUsage));
+        geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 
         const material = new THREE.PointsMaterial({
-            size: 4,
+            size: 5, // Pallini leggermente più grandi per l'effetto wow
             vertexColors: true,
             transparent: true,
-            opacity: 0.9,
+            opacity: 0.8,
         });
 
         const points = new THREE.Points(geometry, material);
@@ -76,36 +82,30 @@ export function DottedSurface({ className }: { className?: string }) {
         let count = 0;
         let animationId: number;
 
-        // 3. Funzione di Animazione (La tua logica originale)
         const animate = () => {
             animationId = requestAnimationFrame(animate);
 
-            const attr = geometry.attributes.position;
-            const posArray = attr.array as Float32Array;
+            const posAttr = geometry.attributes.position;
+            const posArray = posAttr.array as Float32Array;
 
             let i = 0;
             for (let ix = 0; ix < AMOUNTX; ix++) {
                 for (let iy = 0; iy < AMOUNTY; iy++) {
-                    const index = i * 3;
-
-                    // Calcolo altezza onda
-                    posArray[index + 1] =
+                    // MATEMATICA ONDA DINAMICA
+                    // La Y cambia in base a ix e iy nel tempo (count)
+                    posArray[i * 3 + 1] =
                         Math.sin((ix + count) * 0.3) * 50 +
                         Math.sin((iy + count) * 0.5) * 50;
-
                     i++;
                 }
             }
 
-            // Forza l'aggiornamento dei punti
-            attr.needsUpdate = true;
-
-            // Rotazione leggera
-            points.rotation.y = Math.sin(count * 0.05) * 0.1;
+            posAttr.needsUpdate = true;
+            
+            // Rotazione lenta della telecamera per dare dinamismo
+            points.rotation.y = Math.sin(count * 0.1) * 0.05;
 
             renderer.render(scene, camera);
-            
-            // INCREMENTO DEL COUNT (Fondamentale per il movimento)
             count += 0.05;
         };
 
@@ -124,16 +124,14 @@ export function DottedSurface({ className }: { className?: string }) {
             geometry.dispose();
             material.dispose();
             renderer.dispose();
-            if (containerRef.current) {
-                containerRef.current.innerHTML = '';
-            }
         };
     }, []);
 
     return (
         <div
             ref={containerRef}
-            className={`pointer-events-none fixed inset-0 z-0 overflow-hidden bg-[#020205] ${className || ''}`}
+            // Z-INDEX A -1 per stare dietro al testo
+            className={`pointer-events-none fixed inset-0 z-[-1] overflow-hidden bg-[#020205] ${className || ''}`}
         />
     );
 }
