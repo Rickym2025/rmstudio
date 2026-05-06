@@ -24,7 +24,7 @@ export default function App() {
       {/* HEADER CON LOGO */}
       <header className="absolute top-0 left-0 w-full p-6 z-50 flex justify-between items-center max-w-6xl mx-auto right-0">
         <div className="flex items-center gap-3">
-          <img src="/logo.svg" alt="RM Studio Logo" className="w-10 h-10 object-contain" onError={(e) => (e.currentTarget.style.display = 'none')} />
+          <img src="/logo.png" alt="RM Studio Logo" className="w-10 h-10 object-contain" onError={(e) => (e.currentTarget.style.display = 'none')} />
           <span className="font-black tracking-widest text-xl">RM STUDIO</span>
         </div>
       </header>
