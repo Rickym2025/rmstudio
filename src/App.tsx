@@ -13,7 +13,7 @@ export default function App() {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-  };
+  }; 
 
   return (
     <main className="min-h-screen text-white selection:bg-cyan-500 selection:text-white overflow-x-hidden relative">
