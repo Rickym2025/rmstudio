@@ -8,6 +8,12 @@ export function NovaChatbot() {
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
+  const suggestions = [
+    "Vorrei un video UGC",
+    "Cos'è OmniaStudio?",
+    "Progetto musicale Fausto",
+    "Parla con Riccardo"
+  ];
   // Auto-apertura su PC dopo 1.5 secondi
   useEffect(() => {
     if (window.innerWidth > 768) {
@@ -21,6 +27,18 @@ export function NovaChatbot() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isLoading]);
 
+  <div className="p-2 flex flex-wrap gap-2 border-t border-white/5 bg-black/20">
+    {suggestions.map((text) => (
+      <button 
+        key={text}
+        onClick={() => { setInput(text); sendMessage(); }}
+        className="text-[10px] bg-white/5 hover:bg-white/10 border border-white/10 px-2 py-1 rounded-full transition-colors"
+      >
+        {text}
+      </button>
+    ))}
+  </div>
+  
   const sendMessage = async () => {
     if (!input.trim()) return;
     const userText = input.trim();
