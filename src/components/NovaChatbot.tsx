@@ -8,12 +8,6 @@ export function NovaChatbot() {
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const suggestions = [
-    "Vorrei un video UGC",
-    "Cos'è OmniaStudio?",
-    "Progetto musicale Fausto",
-    "Parla con Riccardo"
-  ];
   // Auto-apertura su PC dopo 1.5 secondi
   useEffect(() => {
     if (window.innerWidth > 768) {
