@@ -1,7 +1,7 @@
 import { DottedSurface } from "./components/DottedSurface";
 import { NovaChatbot } from "./components/NovaChatbot";
 import { FloatingDock } from "./components/FloatingDock";
-import { ScrollAnimation } from "./components/ScrollAnimation"; // IMPORTANTE
+// import { ScrollAnimation } from "./components/ScrollAnimation"; // IMPORTANTE
 import { ExternalLink, Download } from "lucide-react";
 import { Toaster, toast } from "sonner";
 
@@ -53,7 +53,7 @@ export default function App() {
       </div>
 
       {/* SEZIONE ANIMAZIONE (Crea lo scroll lungo) */}
-      <ScrollAnimation />
+    
 
       {/* GRIGLIA PROGETTI */}
       <div className="relative z-10 max-w-6xl mx-auto px-6 py-32">
