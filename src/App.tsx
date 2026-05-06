@@ -1,7 +1,7 @@
 import { DottedSurface } from "./components/DottedSurface";
 import { NovaChatbot } from "./components/NovaChatbot";
 import { FloatingDock } from "./components/FloatingDock";
-import { ExternalLink, Download, Link2 as Linkedin } from "lucide-react";
+import { ExternalLink, Download } from "lucide-react";
 import { Toaster, toast } from "sonner";
 
 export default function App() {
@@ -21,11 +21,10 @@ export default function App() {
       
       <DottedSurface />
 
-      {/* HEADER CON LOGO (Punto 6) */}
+      {/* HEADER CON LOGO */}
       <header className="absolute top-0 left-0 w-full p-6 z-50 flex justify-between items-center max-w-6xl mx-auto right-0">
         <div className="flex items-center gap-3">
-          {/* Sostituisci src="/logo.svg" quando avrai il file nella cartella public */}
-          <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-cyan-500 to-purple-600 flex items-center justify-center font-black text-lg">RM</div>
+          <img src="/logo.svg" alt="RM Studio Logo" className="w-10 h-10 object-contain" onError={(e) => (e.currentTarget.style.display = 'none')} />
           <span className="font-black tracking-widest text-xl">RM STUDIO</span>
         </div>
       </header>
@@ -35,30 +34,24 @@ export default function App() {
           AI Media & Automation Agency
         </div>
         
-        {/* TESTO BUSINESS-ORIENTED (Punto 2) */}
         <h1 className="text-5xl md:text-7xl font-black text-center tracking-tighter leading-tight mb-6">
           L'Intelligenza Artificiale che <br />
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600">Lavora per il tuo Business.</span>
         </h1>
         
         <p className="text-lg md:text-xl text-white/60 text-center max-w-2xl mb-12 font-light tracking-wide">
-          Dall'acquisizione clienti automatizzata alla produzione video cinematografica. Costruiamo ecosistemi su misura per abbattere i costi ed espandere il tuo mercato.
+          Costruiamo ecosistemi AI su misura per abbattere i costi ed espandere il tuo mercato.
         </p>
 
-        {/* PULSANTI CALL TO ACTION (Punto 1 e 8) */}
         <div className="flex flex-col sm:flex-row gap-4 mb-24 w-full sm:w-auto">
-          <button onClick={handleVCardClick} className="flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-white text-black font-bold hover:scale-105 transition-transform">
+          <button onClick={handleVCardClick} className="flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-white text-black font-bold hover:scale-105 transition-transform shadow-[0_0_20px_rgba(255,255,255,0.3)]">
             <Download size={18} />
-            Salva Contatto
+            Salva Contatto (vCard)
           </button>
-          <a href="https://www.linkedin.com/in/INSERISCI_IL_TUO_LINK_QUI" target="_blank" rel="noreferrer" className="flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-white/5 border border-white/10 text-white font-bold hover:bg-white/10 hover:border-white/30 transition-all">
-            <Linkedin size={18} className="text-blue-400" />
-            Connettiamoci su LinkedIn
-          </a>
         </div>
 
-        {/* PROGETTI AGGIORNATI E COLORATI (Punti 3, 4, 5) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-5xl">
+        {/* GRIGLIA PROGETTI (5 Schede) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-6xl justify-center">
           <ProjectCard 
             title="DriveMotion" tag="Automotive AI" 
             desc="Sfondi fotorealistici e video virali generati in automatico per autosaloni e concessionarie." 
@@ -78,10 +71,16 @@ export default function App() {
             glowColor="from-orange-400 to-red-500" 
           />
           <ProjectCard 
-            title="OmniaStudio & FF Edizioni" tag="Software & Audio" 
-            desc="Privacy AI in locale per i tuoi documenti e produzione di Jingle musicali AI pronti per il broadcast." 
+            title="OmniaStudio" tag="Privacy AI" 
+            desc="L'AI che lavora in locale sul tuo PC. Analisi documenti e PDF senza inviare dati al cloud." 
             url="https://omnia.rmstudio.app" 
             glowColor="from-purple-500 to-pink-500" 
+          />
+          <ProjectCard 
+            title="FF Edizioni" tag="Audio & Music" 
+            desc="Produzione di Jingle musicali e colonne sonore AI originali pronte per il broadcast e i social." 
+            url="https://rickym2025.github.io/fausto-fusetti-links/index.html" 
+            glowColor="from-yellow-400 to-orange-600" 
           />
         </div>
       </div>
@@ -95,9 +94,7 @@ export default function App() {
 function ProjectCard({ title, tag, desc, url, glowColor }: { title: string, tag: string, desc: string, url: string, glowColor: string }) {
   return (
     <a href={url} target="_blank" rel="noreferrer" className="p-8 bg-[#0a0a0f]/80 border border-white/5 rounded-3xl hover:border-white/20 transition-all duration-500 group relative backdrop-blur-md flex flex-col h-full overflow-hidden">
-      {/* Sfondo sfumato colorato che appare all'hover */}
       <div className={`absolute inset-0 bg-gradient-to-br ${glowColor} opacity-0 group-hover:opacity-10 transition-opacity duration-500`} />
-      
       <div className="flex justify-between items-start mb-6 relative z-10">
         <span className={`text-[10px] uppercase tracking-[3px] font-black bg-clip-text text-transparent bg-gradient-to-r ${glowColor}`}>{tag}</span>
         <ExternalLink size={16} className="text-white/20 group-hover:text-white transition-colors" />
