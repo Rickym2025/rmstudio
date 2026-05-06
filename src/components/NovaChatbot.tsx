@@ -26,18 +26,6 @@ export function NovaChatbot() {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isLoading]);
-
-  <div className="p-2 flex flex-wrap gap-2 border-t border-white/5 bg-black/20">
-    {suggestions.map((text) => (
-      <button 
-        key={text}
-        onClick={() => { setInput(text); sendMessage(); }}
-        className="text-[10px] bg-white/5 hover:bg-white/10 border border-white/10 px-2 py-1 rounded-full transition-colors"
-      >
-        {text}
-      </button>
-    ))}
-  </div>
   
   const sendMessage = async () => {
     if (!input.trim()) return;
@@ -93,6 +81,19 @@ export function NovaChatbot() {
           <div ref={messagesEndRef} />
         </div>
 
+        {/* SUGGERIMENTI RAPIDI */}
+        <div className="p-2 flex flex-wrap gap-2 bg-white/5 border-t border-white/5">
+          {["Video UGC", "OmniaStudio", "Musica AI", "Parla con Riccardo"].map((text) => (
+            <button 
+              key={text} 
+              onClick={() => setInput(text)} 
+              className="text-[9px] font-bold uppercase tracking-wider bg-white/10 hover:bg-white/20 border border-white/10 px-2 py-1 rounded-md transition-colors"
+            >
+              {text}
+            </button>
+          ))}
+        </div>
+        
         <div className="p-4 border-t border-white/5 bg-black/50 flex gap-2">
           <input type="text" value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && sendMessage()} placeholder="Chiedimi qualcosa..." className="flex-1 bg-transparent border border-white/10 rounded-xl px-4 py-2 text-sm text-white outline-none focus:border-white/50 transition-colors" />
           <button onClick={sendMessage} className="bg-white text-black p-2 rounded-xl hover:scale-105 transition-transform"><Send size={18} /></button>
