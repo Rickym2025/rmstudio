@@ -3,49 +3,51 @@ import { useScroll, useTransform, motion, useMotionValueEvent } from "framer-mot
 
 export function ScrollAnimation() {
   const ref = useRef(null);
-  const [currentFrame, setCurrentFrame] = useState("/animation/frame_001.jpg");
+  // Percorso iniziale corretto per EZGIF
+  const [currentFrame, setCurrentFrame] = useState("/animation/ezgif-frame-001.jpg");
 
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end end"]
   });
 
-  // Mappa lo scroll (0 a 1) sui tuoi frame (es. da 1 a 80)
-  const frameIndex = useTransform(scrollYProgress, [0, 1], [1, 80]);
+  // Mappiamo lo scroll su 160 immagini
+  const frameIndex = useTransform(scrollYProgress, [0, 1], [1, 160]);
 
   useMotionValueEvent(frameIndex, "change", (latest) => {
+    // Trasforma il numero in 001, 002, ecc.
     const num = Math.floor(latest).toString().padStart(3, '0');
-    setCurrentFrame(`/animation/frame_${num}.jpg`);
+    // Costruisce il nome file come uscito da EZGIF
+    setCurrentFrame(`/animation/ezgif-frame-${num}.jpg`);
   });
 
   return (
-    <section ref={ref} className="h-[300vh] relative bg-transparent">
+    <section ref={ref} className="h-[400vh] relative bg-transparent">
       <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center overflow-hidden">
         
-        {/* Testo che accompagna l'animazione */}
         <motion.div 
-          style={{ opacity: useTransform(scrollYProgress, [0, 0.2], [1, 0]) }}
-          className="absolute top-20 text-center z-20"
+          style={{ opacity: useTransform(scrollYProgress, [0, 0.15], [1, 0]) }}
+          className="absolute top-24 text-center z-20"
         >
-          <h2 className="text-2xl font-bold tracking-widest text-cyan-500 uppercase">The Innovation Core</h2>
-          <p className="text-white/40 text-sm">Scorri per de-costruire l'ingegneria</p>
+          <h2 className="text-2xl font-bold tracking-[0.3em] text-cyan-500 uppercase">The Innovation Core</h2>
+          <p className="text-white/40 text-sm mt-2 font-light">Scorri per esplorare l'ingegneria RM Studio</p>
         </motion.div>
 
         <img 
           src={currentFrame} 
           alt="AI Core Animation" 
-          className="w-full max-w-[800px] h-auto object-contain z-10"
+          className="w-full max-w-[900px] h-auto object-contain z-10"
         />
 
-        {/* Testo finale che appare quando il core è aperto */}
         <motion.div 
-          style={{ opacity: useTransform(scrollYProgress, [0.8, 0.9], [0, 1]) }}
-          className="absolute bottom-20 text-center z-20"
+          style={{ opacity: useTransform(scrollYProgress, [0.85, 0.95], [0, 1]) }}
+          className="absolute bottom-24 text-center z-20 px-6"
         >
-          <h2 className="text-4xl font-black text-white">Potenza Pura.</h2>
-          <p className="text-white/60">Zero Codice. Solo Risultati.</p>
+          <h2 className="text-4xl md:text-6xl font-black text-white tracking-tighter">Potenza Pura.</h2>
+          <p className="text-white/60 text-lg mt-2">Nessun limite. Solo soluzioni scalabili.</p>
         </motion.div>
 
+        {/* Sfumature per fondere l'animazione con il resto del sito */}
         <div className="absolute inset-0 bg-gradient-to-b from-[#04040a] via-transparent to-[#04040a] pointer-events-none" />
       </div>
     </section>
