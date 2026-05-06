@@ -67,19 +67,19 @@ export default function App() {
           <ProjectCard 
             title="Concierge24" tag="Hospitality" 
             desc="L'assistente vocale H24 multilingua che gestisce i turisti del tuo Hotel e vende servizi extra." 
-            url="https://concierge.rmstudio.app" 
+            url="https://concierge24.rmstudio.app/" 
             glowColor="from-orange-400 to-red-500" 
           />
           <ProjectCard 
             title="OmniaStudio" tag="Privacy AI" 
             desc="L'AI che lavora in locale sul tuo PC. Analisi documenti e PDF senza inviare dati al cloud." 
-            url="https://omnia.rmstudio.app" 
+            url="https://omniastudio.rmstudio.app/" 
             glowColor="from-purple-500 to-pink-500" 
           />
           <ProjectCard 
             title="FF Edizioni" tag="Audio & Music" 
             desc="Produzione di Jingle musicali e colonne sonore AI originali pronte per il broadcast e i social." 
-            url="https://rickym2025.github.io/fausto-fusetti-links/index.html" 
+            url="https://ff.rmstudio.app/" 
             glowColor="from-yellow-400 to-orange-600" 
           />
         </div>
