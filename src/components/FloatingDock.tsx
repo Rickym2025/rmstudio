@@ -15,11 +15,13 @@ export function FloatingDock() {
     document.body.removeChild(link);
   };
 
-  const menuItems =[
-    { title: 'Omnia', icon: <Shield size={18} />, color: '#a955ff', url: 'https://omniastudio-pro.vercel.app/' },
-    { title: 'Concierge', icon: <MessageSquare size={18} />, color: '#56CCF2', url: 'https://concierge24.vercel.app/' },
-    { title: 'HomeTour', icon: <Briefcase size={18} />, color: '#80FF72', url: 'https://hometour-studio.vercel.app/' },
-    { title: 'vCard', icon: <Download size={18} />, color: '#FF9966', action: handleVCardClick },
+  const menuItems = [
+    { title: 'Auto', icon: <Car size={18} />, color: '#3b82f6', url: 'https://drivemotion.rmstudio.app' },
+    { title: 'Case', icon: <Briefcase size={18} />, color: '#10b981', url: 'https://hometour.rmstudio.app' },
+    { title: 'Hotel', icon: <MessageSquare size={18} />, color: '#f97316', url: 'https://concierge24.rmstudio.app/' },
+    { title: 'Privacy', icon: <Shield size={18} />, color: '#a855f7', url: 'https://omniastudio.rmstudio.app/' },
+    { title: 'Music', icon: <Music size={18} />, color: '#eab308', url: 'https://ff.rmstudio.app/' },
+    { title: 'vCard', icon: <Download size={18} />, color: '#ffffff', action: handleVCardClick },
   ];
 
   return (
