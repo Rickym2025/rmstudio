@@ -140,7 +140,7 @@ export default function App() {
     const formData = new FormData(e.currentTarget);
     
     // INSERISCI QUI LA TUA ACCESS KEY DI WEB3FORMS (La trovi registrandoti gratis su web3forms.com)
-    formData.append("access_key", "INSERISCI_QUI_LA_TUA_CHIAVE_WEB3FORMS"); 
+    formData.append("access_key", "9013a8d5-0901-42a0-b9e6-4c45553f960d"); 
 
     try {
       const res = await fetch("https://api.web3forms.com/submit", { method: "POST", body: formData }).then(r => r.json());
