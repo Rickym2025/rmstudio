@@ -1,4 +1,4 @@
-//import { DottedSurface } from "./components/DottedSurface";
+import { DottedSurface } from "./components/DottedSurface";
 import { BackgroundScrollVideo } from "./components/BackgroundScrollVideo";
 import { NovaChatbot } from "./components/NovaChatbot";
 import { FloatingDock } from "./components/FloatingDock";
