@@ -43,21 +43,28 @@ export function NovaChatbot() {
     }
 
     try {
-      // Inserisci l'URL del tuo Webhook n8n qui
       const res = await fetch("https://n8n.labottegadeldelta.it/webhook/nova", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        },
         body: JSON.stringify({ message: userText, sessionId })
       });
+      
       const data = await res.json();
+      console.log("Risposta da n8n:", data); // DEBUG: Guarda nella console del browser cosa arriva
+      
+      // FIX: Cerchiamo 'response' (quello che manda il tuo n8n), poi 'output'
+      const botResponse = data.response || data.output || "Messaggio ricevuto, ma formato risposta non valido.";
       
       // Fix per rendere i link cliccabili
-      const botResponse = data.response || data.output || "Ricevuto.";
       const formattedResponse = botResponse.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" class="text-cyan-400 underline font-bold hover:text-cyan-300">Clicca Qui</a>');
 
       setMessages((prev) =>[...prev, { text: formattedResponse, sender: "bot" }]);
     } catch (error) {
-      setMessages((prev) =>[...prev, { text: "I miei server sono saturi. Riprova tra poco.", sender: "bot" }]);
+      console.error("Errore fetch:", error);
+      setMessages((prev) =>[...prev, { text: "I miei server sono saturi o c'è un blocco CORS. Riprova tra poco.", sender: "bot" }]);
     } finally {
       setIsLoading(false);
     }
@@ -87,7 +94,6 @@ export function NovaChatbot() {
           <div ref={messagesEndRef} />
         </div>
 
-        {/* PULSANTI DI SCELTA RAPIDA (Migliorati) */}
         <div className="p-3 flex flex-wrap gap-2 bg-black/40 border-t border-white/5">
           {suggestions.map((text) => (
             <button key={text} onClick={() => sendMessage(text)} className="text-[10px] font-bold text-cyan-100 bg-cyan-500/10 hover:bg-cyan-500/30 border border-cyan-500/20 px-3 py-1.5 rounded-full transition-all">
