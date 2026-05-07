@@ -1,5 +1,4 @@
-// L'oceano di puntini è importato, ma lo "spegneremo" nel codice
-import { DottedSurface } from "./components/DottedSurface";
+//import { DottedSurface } from "./components/DottedSurface";
 import { BackgroundScrollVideo } from "./components/BackgroundScrollVideo";
 import { NovaChatbot } from "./components/NovaChatbot";
 import { FloatingDock } from "./components/FloatingDock";
