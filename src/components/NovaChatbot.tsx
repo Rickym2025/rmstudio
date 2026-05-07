@@ -52,7 +52,7 @@ export function NovaChatbot() {
       const data = await res.json();
       
       // Fix per rendere i link cliccabili
-      const botResponse = data.output || "Ricevuto.";
+      const botResponse = data.response || data.output || "Ricevuto.";
       const formattedResponse = botResponse.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" class="text-cyan-400 underline font-bold hover:text-cyan-300">Clicca Qui</a>');
 
       setMessages((prev) =>[...prev, { text: formattedResponse, sender: "bot" }]);
