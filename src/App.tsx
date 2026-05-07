@@ -1,5 +1,4 @@
 import React, { useRef, useState, useEffect } from "react";
-import { DottedSurface } from "./components/DottedSurface";
 import { NovaChatbot } from "./components/NovaChatbot";
 import { FloatingDock } from "./components/FloatingDock";
 import { ExternalLink, Download, Send } from "lucide-react";
@@ -81,7 +80,7 @@ function TestimonialCard({ handleShuffle, testimonial, position, id, author }: a
         dragRef.current = 0;
       }}
       transition={{ duration: 0.35 }}
-      className={`absolute left-0 top-0 grid h-[350px] w-[300px] select-none place-content-center space-y-6 rounded-3xl border border-white/10 bg-[#0a0a0f]/90 p-8 shadow-2xl backdrop-blur-xl ${
+      className={`absolute left-0 top-0 grid h-[350px] w-[300px] select-none place-content-center space-y-6 rounded-3xl border border-white/10 bg-black/40 p-8 shadow-2xl backdrop-blur-xl ${
         isFront ? "cursor-grab active:cursor-grabbing" : ""
       }`}
     >
@@ -92,7 +91,6 @@ function TestimonialCard({ handleShuffle, testimonial, position, id, author }: a
   );
 }
 
-// Sezione Container per Testimonianze
 const initialTestimonials = [
   { id: "12", author: "Marco G. (Modena)", text: "Abbiamo venduto un immobile in 4 giorni dall'annuncio. Il Reel di HomeTour ha fatto 10k views organiche su Instagram." },
   { id: "32", author: "Sara L. (Roma)", text: "L'assistente Concierge24 ha letteralmente azzerato le chiamate in reception per chiedere la password del WiFi." },
@@ -101,7 +99,6 @@ const initialTestimonials = [
 
 function TestimonialSection() {
   const [testimonials, setTestimonials] = useState(initialTestimonials);
-
   const handleShuffle = () => {
     setTestimonials((prev) => {
       const newArr = [...prev];
@@ -134,223 +131,12 @@ export default function App() {
     document.body.removeChild(link);
   };
 
-  // Funzione Invio Web3Forms
   const handleContactSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    
-    // INSERISCI QUI LA TUA ACCESS KEY DI WEB3FORMS (La trovi registrandoti gratis su web3forms.com)
     formData.append("access_key", "9013a8d5-0901-42a0-b9e6-4c45553f960d"); 
 
     try {
       const res = await fetch("https://api.web3forms.com/submit", { method: "POST", body: formData }).then(r => r.json());
       if (res.success) {
-        toast.success("Messaggio inviato con successo! Ti risponderò entro 24 ore.");
-        (e.target as HTMLFormElement).reset();
-      } else {
-        toast.error("Errore nell'invio del messaggio.");
-      }
-    } catch (error) {
-      toast.error("Errore di rete. Riprova più tardi.");
-    }
-  };
-
-  return (
-    <main className="text-white selection:bg-cyan-500 selection:text-white relative bg-transparent overflow-hidden">
-      <Toaster position="top-center" theme="dark" />
-      
-      {/* SFONDO PUNTINI (Il bg è trasparente per lasciar vedere i puntini z-[-1]) */}
-      <DottedSurface />
-
-      {/* HEADER PROFESSIONALE */}
-      <header className="fixed top-0 left-0 w-full p-4 md:p-6 z-50 backdrop-blur-md bg-[#04040a]/40 border-b border-white/5">
-        <div className="max-w-6xl mx-auto flex justify-between items-center">
-          <div className="flex items-center gap-3">
-            <img src="/logo.jpg" alt="RM Studio Logo" className="w-8 h-8 object-contain rounded-md" onError={(e) => (e.currentTarget.style.display = 'none')} />
-            <span className="font-black tracking-[0.2em] text-lg">RM STUDIO</span>
-          </div>
-          <a href="#contatti" className="text-xs font-bold uppercase tracking-wider text-cyan-400 hover:text-cyan-300 transition-colors border border-cyan-500/30 px-4 py-2 rounded-full bg-cyan-500/10">
-            Contattaci
-          </a>
-        </div>
-      </header>
-
-      <div className="relative z-10 flex flex-col w-full">
-        
-        {/* SEZIONE 1: HERO */}
-        <section className="min-h-screen flex flex-col items-center justify-center px-6 pt-20">
-          <div className="inline-block px-4 py-1.5 rounded-full border border-cyan-500/30 bg-black/40 backdrop-blur-md mb-8 text-[10px] font-black tracking-[4px] text-cyan-400 uppercase shadow-[0_0_20px_rgba(6,182,212,0.15)]">
-            AI Engineering Lab
-          </div>
-          <h1 className="text-5xl md:text-7xl font-black text-center tracking-tighter leading-tight mb-6 drop-shadow-2xl">
-            L'Intelligenza Artificiale che <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600">Lavora per il tuo Business.</span>
-          </h1>
-          <p className="text-lg md:text-xl text-white/80 text-center max-w-2xl mb-12 font-light tracking-wide drop-shadow-lg">
-            Sviluppiamo ecosistemi AI su misura per abbattere i costi operativi ed espandere il tuo mercato. Nessun codice, solo risultati.
-          </p>
-          <button onClick={handleVCardClick} className="flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-white text-black font-bold hover:scale-105 transition-transform shadow-[0_0_30px_rgba(255,255,255,0.2)]">
-            <Download size={18} />
-            Salva il mio Contatto (vCard)
-          </button>
-        </section>
-
-        {/* SEZIONE 2: IL FOUNDER */}
-        <section className="py-32 px-6 bg-gradient-to-b from-transparent via-[#080812]/90 to-transparent backdrop-blur-sm">
-          <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center gap-16">
-            <div className="w-full md:w-1/2 relative group">
-               <div className="absolute inset-0 bg-gradient-to-tr from-cyan-500 to-purple-600 blur-3xl opacity-20 group-hover:opacity-40 transition-opacity duration-700 rounded-full" />
-               <img src="/riccardo_founder.jpeg" alt="Riccardo Modena" className="relative z-10 rounded-3xl border border-white/10 shadow-2xl object-cover w-full aspect-square md:aspect-[4/5] grayscale-[20%] group-hover:grayscale-0 transition-all duration-500" />
-            </div>
-            <div className="w-full md:w-1/2">
-              <h2 className="text-3xl md:text-4xl font-black mb-6 leading-tight">Non ti vendo software.<br/><span className="text-cyan-400">Ti costruisco un vantaggio.</span></h2>
-              <p className="text-white/70 mb-6 leading-relaxed text-lg font-light">
-                Sono Riccardo Modena, founder di RM Studio. Vedo troppe aziende bloccate da processi lenti, compiti manuali e costi operativi insostenibili.
-              </p>
-              <p className="text-white/70 mb-8 leading-relaxed text-lg font-light">
-                Oggi l'Intelligenza Artificiale non è più un lusso, è l'unico modo per scalare. Il mio lavoro? <strong className="text-white font-medium">Prendo i tuoi colli di bottiglia e li trasformo in ecosistemi autonomi</strong> che producono media, gestiscono clienti e generano vendite H24.
-              </p>
-              <a href="#progetti" className="inline-block border-b border-cyan-400 text-cyan-400 pb-1 font-bold hover:text-white hover:border-white transition-colors">
-                Scopri le nostre Soluzioni ↓
-              </a>
-            </div>
-          </div>
-        </section>
-
-        {/* SEZIONE 3: I PRODOTTI */}
-        <section id="progetti" className="py-32 px-6 relative z-10">
-          <div className="max-w-6xl mx-auto flex flex-col gap-8">
-            <h2 className="text-4xl md:text-5xl font-black text-center tracking-tight mb-16">I Nostri Ecosistemi</h2>
-
-            {/* ORDINE SCHEDE RICHIESTO: Concierge, DriveMotion, HomeTour, OmniaStudio, FF Edizioni */}
-            <ProjectCard 
-              title="Concierge24" tag="Hospitality" logo="/logo_Concierge24.png"
-              desc="L'assistente vocale H24 multilingua che accoglie i tuoi ospiti, risponde alle loro domande e fa up-selling dei tuoi servizi extra mentre il tuo staff riposa." 
-              url="https://concierge.rmstudio.app/" glowColor="from-orange-400 to-red-500" 
-            />
-
-            <ProjectCard 
-              title="DriveMotion" tag="Automotive AI" logo="/logo_drivemotion.png"
-              desc="Sfondi fotorealistici e video virali generati in automatico. Trasforma le foto amatoriali del tuo piazzale in reel cinematografici che aumentano il valore percepito delle tue auto." 
-              url="https://drivemotion.rmstudio.app" glowColor="from-blue-500 to-cyan-400" 
-            />
-
-            <ProjectCard 
-              title="HomeTour AI" tag="Real Estate" logo="/logo_HomeTour.png"
-              desc="Reel immobiliari con voce narrante emozionale, generati in automatico da semplici fotografie. Vendi l'esperienza della casa prima ancora della visita." 
-              url="https://hometour.rmstudio.app" glowColor="from-green-400 to-emerald-600" 
-            />
-
-            <ProjectCard 
-              title="OmniaStudio" tag="Privacy AI" logo="/logo_OmniaStudio.png"
-              desc="La potenza dell'Intelligenza Artificiale generativa, completamente offline. Analizza contratti, PDF e dati sensibili della tua azienda senza mai inviare un byte al cloud." 
-              url="https://omnia.rmstudio.app/" glowColor="from-purple-500 to-pink-500" 
-            />
-
-            <ProjectCard 
-              title="FF Edizioni" tag="Audio & Music" logo="/logo_ff.png"
-              desc="Produzione di Jingle musicali e colonne sonore AI originali. L'identità sonora perfetta per il tuo brand, pronta per il broadcast e le campagne social." 
-              url="https://ff.rmstudio.app/" glowColor="from-yellow-400 to-orange-600" 
-            />
-          </div>
-        </section>
-
-        {/* SEZIONE 4: TESTIMONIANZE (Swipe effect) */}
-        <section className="py-20 px-6 overflow-hidden">
-          <h2 className="text-3xl md:text-4xl font-black text-center tracking-tight mb-4">Dicono di noi</h2>
-          <p className="text-center text-white/50 mb-8">Trascina le card per leggere i feedback</p>
-          <TestimonialSection />
-        </section>
-
-        {/* SEZIONE 5: CONTATTI (Web3Forms) */}
-        <section id="contatti" className="py-24 px-6 bg-gradient-to-t from-[#020205] to-transparent">
-          <div className="max-w-xl mx-auto bg-white/[0.02] border border-white/10 p-8 rounded-3xl backdrop-blur-xl shadow-2xl">
-            <h2 className="text-3xl font-black mb-2 text-center">Iniziamo un Progetto</h2>
-            <p className="text-white/50 text-center mb-8">Compila il modulo, rispondo in meno di 24 ore.</p>
-            
-            <form onSubmit={handleContactSubmit} className="flex flex-col gap-4">
-              <input type="hidden" name="subject" value="Nuovo Contatto dal Sito RM Studio" />
-              <div className="flex flex-col gap-1">
-                <label className="text-xs font-bold uppercase tracking-widest text-white/40">Nome</label>
-                <input type="text" name="name" required className="bg-white/5 border border-white/10 rounded-xl p-3 text-white outline-none focus:border-cyan-500 transition-colors" placeholder="Il tuo nome" />
-              </div>
-              <div className="flex flex-col gap-1">
-                <label className="text-xs font-bold uppercase tracking-widest text-white/40">Email</label>
-                <input type="email" name="email" required className="bg-white/5 border border-white/10 rounded-xl p-3 text-white outline-none focus:border-cyan-500 transition-colors" placeholder="la.tua@email.com" />
-              </div>
-              <div className="flex flex-col gap-1">
-                <label className="text-xs font-bold uppercase tracking-widest text-white/40">Come posso aiutarti?</label>
-                <textarea name="message" required rows={4} className="bg-white/5 border border-white/10 rounded-xl p-3 text-white outline-none focus:border-cyan-500 transition-colors resize-none" placeholder="Descrivi il tuo progetto o il tuo collo di bottiglia..."></textarea>
-              </div>
-              <button type="submit" className="mt-4 flex items-center justify-center gap-2 bg-cyan-500 hover:bg-cyan-400 text-black font-black py-4 rounded-xl transition-colors">
-                <Send size={18} /> Invia Messaggio
-              </button>
-            </form>
-          </div>
-        </section>
-
-        {/* SEZIONE 6: CINEMATIC FOOTER & SOCIAL */}
-        <footer className="relative w-full pt-20 pb-10 bg-[#020205] border-t border-white/10 flex flex-col items-center overflow-hidden">
-          <div className="absolute inset-0 z-0" style={{ background: "radial-gradient(125% 125% at 50% 10%, rgba(15,15,17,0.4) 50%, rgba(6,182,212,0.15) 100%)" }} />
-          
-          <div className="relative z-10 w-full max-w-4xl px-6 h-40 md:h-56 mb-12">
-            <TextHoverEffect text="RM STUDIO" />
-          </div>
-          
-          {/* LINK SOCIAL E CONTATTI */}
-          <div className="relative z-10 flex flex-wrap justify-center gap-8 mb-8">
-            <a href="https://www.facebook.com/riccardo.modena.792" target="_blank" rel="noreferrer" className="text-white/50 hover:text-cyan-400 transition-colors flex items-center gap-2 font-medium">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg> 
-              Facebook
-            </a>
-            <a href="https://instagram.com/riccardo_mode_" target="_blank" rel="noreferrer" className="text-white/50 hover:text-cyan-400 transition-colors flex items-center gap-2 font-medium">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg> 
-              Instagram
-            </a>
-            <a href="https://www.linkedin.com/in/riccardo-modena-13918a61/" target="_blank" rel="noreferrer" className="text-white/50 hover:text-cyan-400 transition-colors flex items-center gap-2 font-medium">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg> 
-              LinkedIn
-            </a>
-            <a href="https://tiktok.com/@mr3d.riccardo" target="_blank" rel="noreferrer" className="text-white/50 hover:text-cyan-400 transition-colors flex items-center gap-2 font-medium">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg>
-              TikTok
-            </a>
-          </div>
-
-          <div className="relative z-10 text-white/30 text-xs text-center">
-            © {new Date().getFullYear()} RM Studio. Tutti i diritti riservati. <br/> riccardo@rmstudio.app
-          </div>
-        </footer>
-
-      </div>
-
-      <NovaChatbot />
-      <FloatingDock />
-    </main>
-  );
-}
-
-// COMPONENTE CARD PRODOTTO
-function ProjectCard({ title, tag, desc, url, glowColor, logo }: { title: string, tag: string, desc: string, url: string, glowColor: string, logo: string }) {
-  return (
-    <a href={url} target="_blank" rel="noreferrer" className="flex flex-col md:flex-row items-center gap-8 bg-white/[0.02] p-8 md:p-10 rounded-3xl border border-white/5 hover:border-white/20 transition-all duration-500 group relative backdrop-blur-md overflow-hidden">
-      <div className={`absolute inset-0 bg-gradient-to-br ${glowColor} opacity-0 group-hover:opacity-5 transition-opacity duration-500`} />
-      
-      <div className="w-full md:w-2/3 relative z-10">
-        <div className="flex items-center gap-4 mb-4">
-           <img src={logo} alt={title} className="w-12 h-12 object-contain rounded-xl shadow-lg bg-black/50 p-1" onError={(e) => e.currentTarget.style.display='none'} />
-           <div>
-             <h3 className="text-3xl font-bold">{title}</h3>
-             <span className={`text-xs uppercase tracking-[3px] font-black bg-clip-text text-transparent bg-gradient-to-r ${glowColor}`}>{tag}</span>
-           </div>
-        </div>
-        <p className="text-white/60 leading-relaxed text-lg mb-6">
-          {desc}
-        </p>
-        <span className="inline-flex items-center gap-2 text-sm font-bold text-white group-hover:underline decoration-cyan-400 underline-offset-4 transition-all">
-          Accedi alla Piattaforma <ExternalLink size={16} />
-        </span>
-      </div>
-    </a>
-  );
-}
+        toast.success("Messaggio inviato con successo! Ti risponderò entro 24
