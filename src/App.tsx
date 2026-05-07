@@ -516,8 +516,7 @@ export default function App() {
                 Compila il modulo, rispondo personalmente in meno di 24 ore.
               </p>
 
-              {/* FIX: nessun <form> nativo — usa div + onSubmit su button */}
-              <div className="flex flex-col gap-5">
+              <form onSubmit={handleContactSubmit} className="flex flex-col gap-5">
                 <input type="hidden" name="subject" value="Nuovo Lead da RMStudio.app" />
 
                 <div className="space-y-1">
@@ -565,7 +564,7 @@ export default function App() {
                 >
                   <Send size={18} /> Invia Messaggio
                 </button>
-              </div>
+              </form>
             </div>
           </section>
 
