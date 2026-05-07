@@ -1,8 +1,8 @@
-import React, { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect } from "react";
 import { DottedSurface } from "./components/DottedSurface";
 import { NovaChatbot } from "./components/NovaChatbot";
 import { FloatingDock } from "./components/FloatingDock";
-import { ExternalLink, Download, CheckCircle2 } from "lucide-react";
+import { ExternalLink, Download } from "lucide-react";
 import { Toaster, toast } from "sonner";
 import { motion } from "framer-motion";
 
@@ -96,14 +96,14 @@ export default function App() {
     <main className="text-white selection:bg-cyan-500 selection:text-white relative bg-[#04040a] overflow-hidden">
       <Toaster position="top-center" theme="dark" />
       
-      {/* SFONDO PUNTINI (Rimesso in funzione) */}
+      {/* SFONDO PUNTINI */}
       <DottedSurface />
 
       {/* HEADER PROFESSIONALE */}
       <header className="fixed top-0 left-0 w-full p-4 md:p-6 z-50 backdrop-blur-md bg-[#04040a]/40 border-b border-white/5">
         <div className="max-w-6xl mx-auto flex justify-between items-center">
           <div className="flex items-center gap-3">
-            <img src="/logo.jpg" alt="RM Studio Logo" className="w-8 h-8 object-contain" onError={(e) => (e.currentTarget.style.display = 'none')} />
+            <img src="/logo.jpg" alt="RM Studio Logo" className="w-8 h-8 object-contain rounded-md" onError={(e) => (e.currentTarget.style.display = 'none')} />
             <span className="font-black tracking-[0.2em] text-lg">RM STUDIO</span>
           </div>
           <button onClick={() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })} className="text-xs font-bold uppercase tracking-wider text-cyan-400 hover:text-cyan-300 transition-colors border border-cyan-500/30 px-4 py-2 rounded-full bg-cyan-500/10">
@@ -159,12 +159,11 @@ export default function App() {
           <div className="max-w-6xl mx-auto flex flex-col gap-8">
             <h2 className="text-4xl md:text-5xl font-black text-center tracking-tight mb-16">I Nostri Ecosistemi</h2>
 
-            {/* OMNIA STUDIO (Aggiunto come richiesto) */}
             <ProjectCard 
               title="OmniaStudio" tag="Privacy AI" 
               logo="/logo_OmniaStudio.png"
               desc="La potenza dell'Intelligenza Artificiale generativa, completamente offline. Analizza contratti, PDF e dati sensibili della tua azienda senza mai inviare un solo byte al cloud. Privacy garantita al 100%." 
-              url="https://omniastudio.rmstudio.app/" 
+              url="https://omnia.rmstudio.app/" 
               glowColor="from-purple-500 to-pink-500" 
             />
 
@@ -202,9 +201,8 @@ export default function App() {
           </div>
         </section>
 
-        {/* SEZIONE 4: CINEMATIC FOOTER (Da 21st.dev) */}
+        {/* SEZIONE 4: CINEMATIC FOOTER */}
         <footer className="relative w-full h-[50vh] md:h-[60vh] bg-[#020205] border-t border-white/10 flex flex-col items-center justify-center overflow-hidden">
-          {/* Gradiente radiale di sfondo */}
           <div className="absolute inset-0 z-0" style={{ background: "radial-gradient(125% 125% at 50% 10%, rgba(15,15,17,0.4) 50%, rgba(6,182,212,0.15) 100%)" }} />
           
           <div className="relative z-10 w-full max-w-4xl px-6 h-48 md:h-64 mb-8">
@@ -226,7 +224,7 @@ export default function App() {
   );
 }
 
-// COMPONENTE CARD PRODOTTO (Layout Orizzontale Elegante)
+// COMPONENTE CARD PRODOTTO
 function ProjectCard({ title, tag, desc, url, glowColor, logo }: { title: string, tag: string, desc: string, url: string, glowColor: string, logo: string }) {
   return (
     <a href={url} target="_blank" rel="noreferrer" className="flex flex-col md:flex-row items-center gap-8 bg-white/[0.02] p-8 md:p-10 rounded-3xl border border-white/5 hover:border-white/20 transition-all duration-500 group relative backdrop-blur-md overflow-hidden">
@@ -248,7 +246,6 @@ function ProjectCard({ title, tag, desc, url, glowColor, logo }: { title: string
         </span>
       </div>
 
-      {/* Box decorativo a destra (puoi metterci GIF in futuro) */}
       <div className="w-full md:w-1/3 h-[200px] bg-gradient-to-tr from-white/5 to-transparent rounded-2xl border border-white/5 flex items-center justify-center group-hover:scale-105 transition-transform duration-700">
          <span className="text-white/10 font-bold uppercase tracking-widest text-xs rotate-[-10deg]">RM Studio Env</span>
       </div>
