@@ -57,7 +57,7 @@ export default function App() {
           <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center gap-12">
             <div className="w-full md:w-1/2 relative group">
                <div className="absolute inset-0 bg-gradient-to-tr from-cyan-500 to-purple-600 blur-2xl opacity-20 rounded-full" />
-               <img src="/riccardo_founder.jpg" alt="Riccardo Modena" className="relative z-10 rounded-2xl border border-white/10 shadow-2xl object-cover w-full h-[400px]" />
+               <img src="/riccardo_founder.jpeg" alt="Riccardo Modena" className="relative z-10 rounded-2xl border border-white/10 shadow-2xl object-cover w-full h-[400px]" />
             </div>
             <div className="w-full md:w-1/2">
               <h2 className="text-3xl font-black mb-4">Meno Codice. Più Risultati.</h2>
