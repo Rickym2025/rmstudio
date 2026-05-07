@@ -9,10 +9,10 @@ export function NovaChatbot() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const suggestions = [
-    "🎥 Voglio un video UGC",
-    "🤖 Come funziona Omnia?",
-    "🏨 Info Concierge Hotel",
-    "🎵 Parla del progetto Musica"
+    "🚗 Video virali per Auto",
+    "🏠 Reel per Agenzie Immobiliari",
+    "🏨 AI Concierge per Hotel",
+    "🤝 Parla con Riccardo"
   ];
 
   useEffect(() => {
