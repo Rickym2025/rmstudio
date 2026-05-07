@@ -203,16 +203,8 @@ function TestimonialSection() {
 }
 
 // ─── 3. PROJECT CARD ──────────────────────────────────────────────────────
-function ProjectCard({
-  title, tag, desc, url, glowColor, logo, isReversed,
-}: {
-  title: string;
-  tag: string;
-  desc: string;
-  url: string;
-  glowColor: string;
-  logo: string;
-  isReversed?: boolean;
+function ProjectCard({ title, tag, desc, url, glowColor, logo, gif, isReversed }: { 
+  title: string, tag: string, desc: string, url: string, glowColor: string, logo: string, gif?: string, isReversed?: boolean 
 }) {
   return (
     <a
@@ -246,15 +238,35 @@ function ProjectCard({
         </span>
       </div>
 
-      {/* Box decorativo con logo centrale — lazy load */}
-      <div className="w-full md:w-1/3 h-[200px] bg-white/5 rounded-2xl border border-white/5 flex items-center justify-center group-hover:scale-105 transition-transform duration-700 relative overflow-hidden">
-        <img
-          src={logo}
-          alt=""
-          loading="lazy"
-          className="w-20 h-20 object-contain opacity-20 group-hover:opacity-40 transition-opacity"
-        />
-        <div className={`absolute inset-0 bg-gradient-to-br ${glowColor} opacity-5`} />
+      {/* Box visuale: GIF se presente, altrimenti Logo centrale */}
+      <div className="w-full md:w-1/3 h-[220px] bg-white/5 rounded-2xl border border-white/5 flex items-center justify-center group-hover:scale-105 transition-transform duration-700 relative overflow-hidden shadow-2xl">
+        {gif ? (
+          // Vista con GIF: copre tutto il box
+          <img
+            src={gif}
+            alt={`${title} demo`}
+            loading="lazy"
+            className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity duration-500"
+          />
+        ) : (
+          // Vista senza GIF: mostra il logo centrale (vecchio stile)
+          <img
+            src={logo}
+            alt=""
+            loading="lazy"
+            className="w-20 h-20 object-contain opacity-20 group-hover:opacity-40 transition-opacity"
+          />
+        )}
+
+        {/* Overlay sfumato per coerenza cromatica */}
+        <div className={`absolute inset-0 bg-gradient-to-br ${glowColor} opacity-10 pointer-events-none`} />
+        
+        {/* Etichetta "DEMO" opzionale se c'è una GIF */}
+        {gif && (
+          <div className="absolute bottom-3 right-4 text-[8px] font-black uppercase tracking-[2px] text-white/20">
+            Preview
+          </div>
+        )}
       </div>
     </a>
   );
@@ -445,6 +457,7 @@ export default function App() {
                 title="Concierge24"
                 tag="Hospitality"
                 logo="/logo_Concierge24.png"
+                //gif="/concierge24_gif.gif"
                 desc="L'assistente vocale H24 multilingua che accoglie i tuoi ospiti, risponde alle loro domande e fa up-selling dei tuoi servizi extra mentre il tuo staff riposa."
                 url="https://concierge24.rmstudio.app/"
                 glowColor="from-orange-400 to-red-500"
@@ -455,6 +468,7 @@ export default function App() {
                 title="DriveMotion"
                 tag="Automotive AI"
                 logo="/logo_drivemotion.png"
+                //gif="/drivemotion_gif.gif"
                 desc="Sfondi fotorealistici e video virali generati in automatico. Trasforma le foto amatoriali del tuo piazzale in reel cinematografici che aumentano il valore percepito delle tue auto."
                 url="https://drivemotion.rmstudio.app"
                 glowColor="from-blue-500 to-cyan-400"
@@ -466,6 +480,7 @@ export default function App() {
                 title="HomeTour AI"
                 tag="Real Estate"
                 logo="/logo_HomeTour.png"
+                gif="/hometour_gif.gif"
                 desc="Reel immobiliari con voce narrante emozionale, generati in automatico da semplici fotografie. Vendi l'esperienza della casa prima ancora della visita reale."
                 url="https://hometour.rmstudio.app"
                 glowColor="from-green-400 to-emerald-600"
@@ -476,6 +491,7 @@ export default function App() {
                 title="OmniaStudio"
                 tag="Privacy AI"
                 logo="/logo_OmniaStudio.png"
+                //gif="/hometour_gif.gif"
                 desc="La potenza dell'AI generativa, completamente offline sul tuo PC. Analizza contratti, PDF e dati sensibili senza mai inviare un solo byte al cloud. Privacy al 100%."
                 url="https://omniastudio.rmstudio.app/"
                 glowColor="from-purple-500 to-pink-500"
@@ -487,6 +503,7 @@ export default function App() {
                 title="FF Edizioni"
                 tag="Audio & Music"
                 logo="/logo_ff.png"
+                //gif="/hometour_gif.gif"
                 desc="Identità sonora e colonne sonore AI originali. Jingle musicali pronti per il broadcast e le campagne social, creati per non essere mai dimenticati dai tuoi clienti."
                 url="https://ff.rmstudio.app/"
                 glowColor="from-yellow-400 to-orange-600"
